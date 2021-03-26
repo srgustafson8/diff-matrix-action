@@ -1,0 +1,23 @@
+name: "DiffMatrix Action"
+description: "Generate a GitHub Actions matrix using the git diff"
+author: "Ross Gustafson <ross@gustafson.io>"
+inputs:
+  run-all:
+    description: "testing"
+    required: true
+  run-one:
+    description: ""
+    required: true
+outputs:
+  matrix-json:
+    description: "A GitHub actions compatible matrix JSON object"
+    value: ${{ steps.generate.outputs.diffjson }}
+runs:
+  using: "composite"
+  steps:
+    - id: diff
+      run: ${{ github.action_path }}/get_diff.sh
+      shell: bash
+    - id: generate
+      run: ${{ github.action_path }}/generate_matrix.sh
+      shell: bash
